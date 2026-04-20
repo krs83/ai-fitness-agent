@@ -1,0 +1,9 @@
+.gigaide/
+.env.local
+.env.docker
+.env
+.idea/
+ai-fitness-agent.iml
+venv
+__pycache__/
+
