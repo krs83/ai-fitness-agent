@@ -13,11 +13,12 @@ client = OpenAI(
     project = folder_id
 )
 
-model = f"gpt://{folder_id}/yandexgpt/rc"
+model = f"gpt://{folder_id}/qwen3-235b-a22b-fp8/latest"
 
 res = client.responses.create(
-    model=model,
-    input="Как тренироваться, чтобы сбросить вес?"
+    model = model,
+    instructions = "Ты — опытный фитнес-тренер, задача которого — помочь мне тренироваться в зале.",
+    input = "Привет! С чего ты порекомендуешь начать тренировки в зале?"
 )
 
 print(res.output_text)
