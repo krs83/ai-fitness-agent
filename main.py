@@ -4,22 +4,41 @@ import os
 
 load_dotenv()
 
-folder_id = os.getenv("FOLDER_ID")
-api_key = os.getenv("API_KEY")
+class Assistant:
+    def __init__(self, instructions):
+        self.folder_id = os.getenv("FOLDER_ID")
+        self.api_key = os.getenv("API_KEY")
+        self.instructions = instructions
+        self.previous_response_id_map = {}
+        self.model = f"gpt://{self.folder_id}/qwen3-235b-a22b-fp8/latest"
+        self.client = OpenAI(
+            base_url = "https://ai.api.cloud.yandex.net/v1",
+            api_key = self.api_key,
+            project = self.folder_id
+        )
 
-client = OpenAI(
-    base_url = "https://ai.api.cloud.yandex.net/v1",
-    api_key = api_key,
-    project = folder_id
-)
+    def __call__(self, input, session_id="default"):
+        # Получитить ID предыдущего сообщения для данной сессии
+        previous_response_id = self.previous_response_id_map.get(session_id, None)
 
-model = f"gpt://{folder_id}/qwen3-235b-a22b-fp8/latest"
+        # Сформировать ответ модели
+        res = self.client.responses.create(
+            model = self.model,
+            store = True,
+            previous_response_id = previous_response_id,
+            instructions = self.instructions,
+            max_output_tokens = 100,
+            input = input
+        )
 
-res = client.responses.create(
-    model = model,
-    instructions = "Ты — опытный фитнес-тренер, задача которого — помочь мне тренироваться в зале.",
-    input = "Привет! С чего ты порекомендуешь начать тренировки в зале?"
-)
+        # Записать ID последнего ответа модели в словаре
+        self.previous_response_id_map[session_id] = res.id
+        return res.output_text
 
-print(res.output_text)
+wrong_promt = "Извините, но я не обсуждаю другие темы кроме спорта"
+instructions = ("Ты — опытный фитнес-тренер, задача которого — помочь мне тренироваться в зале c гирями."
+                f"Не обсуждай другие темы кроме  спорта. На другие темы отвечай {wrong_promt}")
+
+fitness_agent = Assistant(instructions)
+print(fitness_agent(input="Привет, хочу тренироваться с гирями 16 и 24 кг"))
 
