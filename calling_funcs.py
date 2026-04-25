@@ -7,11 +7,11 @@ exercises_db = {
 }
 
 # Функции для работы с данными
-def log_exercise(exercise_name,
-                 sets,
-                 reps,
-                 weight=None,
-                 date=None):
+def log_exercise(exercise_name: str,
+                 sets: int,
+                 reps: int,
+                 weight: float| None = None,
+                 date: str | None = None) -> dict:
     """
 Записывает информацию о выполненном упражнении в журнал тренировок
 
@@ -55,7 +55,7 @@ Returns:
         "record_id": record_id
     }
 
-def get_exercise_history(user_id="default", days=7):
+def get_exercise_history(user_id: str = "default", days: int = 7) -> dict:
     """
     Получает историю тренировок пользователя за указанное количество дней
 
@@ -64,7 +64,7 @@ def get_exercise_history(user_id="default", days=7):
         days (int): Количество дней для истории
 
     Returns:
-        list: Записи о тренировках
+        dict: Записи о тренировках
     """
     # Определите дату начала периода
     start_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%M-%D")
@@ -80,10 +80,10 @@ def get_exercise_history(user_id="default", days=7):
         "history": history
     }
 
-def calculate_calories(exercise_name,
-                       duration_minutes,
-                       intensity="moderate",
-                       weight_kg=44):
+def calculate_calories(exercise_name: str,
+                       duration_minutes: int,
+                       intensity: str = "moderate",
+                       weight_kg: float = 44) -> dict:
     """
     Рассчитывает примерное количество сожжённых калорий
 
