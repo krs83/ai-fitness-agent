@@ -11,7 +11,8 @@ def log_exercise(exercise_name: str,
                  sets: int,
                  reps: int,
                  weight: float| None = None,
-                 date: str | None = None) -> dict:
+                 date: str | None = None,
+                 user_id: str = "default")-> dict:
     """
 Записывает информацию о выполненном упражнении в журнал тренировок
 
@@ -21,6 +22,7 @@ Args:
     reps (int): Количество повторений в каждом подходе
     weight (float, optional): Вес в кг
     date (str, optional): Дата тренировки в формате YYYY-MM-DD
+    user_id(str, optional): id пользователя
 
 Returns:
     dict: Информация о записи с уникальным ID
@@ -39,6 +41,7 @@ Returns:
         "exercise": exercise_name,
         "sets": sets,
         "reps": reps,
+        "user_id": user_id,
         "weight": weight,
         "date": date
     }

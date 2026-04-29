@@ -23,6 +23,10 @@ tools = [
                     "type": "string",
                     "description": "Дата тренировки в формате YYYY-MM-DD",
                 },
+                "user_id": {
+                    "type": "string",
+                    "description": "id пользователя",
+                },
             },
             "required": ["exercise_name", "sets", "reps"],
         },
@@ -34,6 +38,10 @@ tools = [
         "parameters": {
             "type": "object",
             "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "Идентификатор пользователя",
+                },
                 "days": {
                     "type": "integer",
                     "description": "За сколько последних дней получить историю (по умолчанию 7)",

@@ -24,7 +24,7 @@ class Assistant:
         }
         self.exercises_db = {}
         self.history = []
-        self.model = f"gpt://{self.folder_id}/qwen3-235b-a22b-fp8/latest"
+        self.model = f"gpt://{self.folder_id}/deepseek-v32/latest"
         self.client = OpenAI(
             base_url="https://ai.api.cloud.yandex.net/v1",
             api_key=self.api_key,
@@ -32,7 +32,7 @@ class Assistant:
         )
 
     def __call__(self, input_text, session_id="default"):
-        # Получитить ID предыдущего сообщения для данной сессии
+        # Получить ID предыдущего сообщения для данной сессии
         previous_response_id = self.previous_response_id_map.get(session_id, None)
 
         # Сформировать ответ модели
@@ -41,7 +41,7 @@ class Assistant:
             store=True,
             previous_response_id=previous_response_id,
             instructions=self.instructions,
-            max_output_tokens=100,
+            # max_output_tokens=100,
             input=input_text,
             tools=self.tools,
         )
@@ -111,13 +111,24 @@ instructions = """
 fitness_assistant = Assistant(instructions, tools=tools)
 
 
-print(fitness_assistant("Привет! Я сегодня сделал 5 подхода по 12 отжиманий. Запиши это."))
+print(fitness_assistant("Привет! Я сегодня сделал 4 подхода по 10 отжиманий. Мой user_id 1. Запиши это."))
 # Ассистент использует log_exercise и возвращает ответ
 
 
-print(fitness_assistant("Сколько калорий я сжёг с высокой интенсивностью?"))
+print(fitness_assistant("Сколько калорий я сжёг за 30 минут бега с высокой интенсивностью? Мой user_id 1"))
 # Ассистент использует calculate_calories и возвращает ответ
 
 
-print(fitness_assistant("Покажи историю моих тренировок"))
+print(fitness_assistant("Покажи историю моих тренировок. Мой user_id 1"))
+# Ассистент использует get_exercise_history и возвращает ответ
+
+print(fitness_assistant("Привет! Я сегодня сделал 5 подхода по 12 отжиманий.Мой user_id 1 Запиши это."))
+# Ассистент использует log_exercise и возвращает ответ
+
+
+print(fitness_assistant("Сколько калорий я сжёг за отжимания с высокой интенсивностью? Мой user_id 1"))
+# Ассистент использует calculate_calories и возвращает ответ
+
+
+print(fitness_assistant("Покажи историю моих тренировок. Мой user_id 1"))
 # Ассистент использует get_exercise_history и возвращает ответ
