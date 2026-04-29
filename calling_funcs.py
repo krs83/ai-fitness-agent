@@ -51,7 +51,7 @@ Returns:
 
     return {
         "status": "success",
-        "message": f"Упражение '{exercise_name}' успешно записано",
+        "message": f"Упражнение '{exercise_name}' успешно записано",
         "record_id": record_id
     }
 
@@ -67,7 +67,7 @@ def get_exercise_history(user_id: str = "default", days: int = 7) -> dict:
         dict: Записи о тренировках
     """
     # Определите дату начала периода
-    start_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%M-%D")
+    start_date = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
 
     # Отфильтруйте записи по пользователю и дате
     history = [

@@ -15,7 +15,7 @@ tools = [
                     "type": "integer",
                     "description": "Количество повторений в каждом подходе",
                 },
-                "weight": {
+                "weight_kg": {
                     "type": "number",
                     "description": "Вес в кг (если применимо)",
                 },
@@ -62,7 +62,7 @@ tools = [
                     "enum": ["low", "moderate", "high"],
                     "description": "Интенсивность тренировки: low (низкая), moderate (средняя), high (высокая)",
                 },
-                "weight": {
+                "weight_kg": {
                     "type": "number",
                     "description": "Вес пользователя в килограммах",
                 },
