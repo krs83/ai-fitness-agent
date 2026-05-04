@@ -19,10 +19,6 @@ tools = [
                     "type": "number",
                     "description": "Вес в кг (если применимо)",
                 },
-                "date": {
-                    "type": "string",
-                    "description": "Дата тренировки в формате YYYY-MM-DD",
-                },
                 "user_id": {
                     "type": "string",
                     "description": "id пользователя",

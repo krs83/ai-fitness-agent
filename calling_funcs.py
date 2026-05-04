@@ -10,7 +10,7 @@ exercises_db = {
 def log_exercise(exercise_name: str,
                  sets: int,
                  reps: int,
-                 weight: float| None = None,
+                 weight_kg: float = 97.0,
                  date: str | None = None,
                  user_id: str = "default")-> dict:
     """
@@ -20,7 +20,7 @@ Args:
     exercise_name (str): Название упражнения
     sets (int): Количество подходов
     reps (int): Количество повторений в каждом подходе
-    weight (float, optional): Вес в кг
+    weight_kg (float, optional): Вес в кг
     date (str, optional): Дата тренировки в формате YYYY-MM-DD
     user_id(str, optional): id пользователя
 
@@ -28,12 +28,16 @@ Returns:
     dict: Информация о записи с уникальным ID
 """
 
+    if not weight_kg:  # обрабатывает None, 0, False
+        weight_kg = 97.0
+        print(f"[DEBUG] Вес не указан или 0, использую значение по умолчанию: {weight_kg} кг")
+
     # Генерируем уникальный ID для записи
     record_id = str(uuid.uuid4())
 
     # Устанавливаем текущую дату, если не указана
     if date is None:
-        date = datetime.now().strftime("%y-%m-%d")
+        date = datetime.now().strftime("%Y-%m-%d")
 
     # Создаём запись
     record = {
@@ -42,7 +46,7 @@ Returns:
         "sets": sets,
         "reps": reps,
         "user_id": user_id,
-        "weight": weight,
+        "weight": weight_kg if weight_kg else 97.0,
         "date": date
     }
 

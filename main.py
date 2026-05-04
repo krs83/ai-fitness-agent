@@ -12,7 +12,6 @@ load_dotenv()
 
 class Assistant:
     def __init__(self, instructions: str, tools=None, function_map=None):
-        self.folder_id = os.getenv("FOLDER_ID")
         self.api_key = os.getenv("API_KEY")
         self.instructions = instructions
         self.previous_response_id_map = {}
@@ -24,11 +23,10 @@ class Assistant:
         }
         self.exercises_db = {}
         self.history = []
-        self.model = f"gpt://{self.folder_id}/deepseek-v32/latest"
+        self.model = "openai/gpt-4o-mini"
         self.client = OpenAI(
-            base_url="https://ai.api.cloud.yandex.net/v1",
+            base_url="https://openai.api.proxyapi.ru/v1",
             api_key=self.api_key,
-            project=self.folder_id,
         )
 
     def __call__(self, input_text, session_id="default"):
@@ -41,7 +39,6 @@ class Assistant:
             store=True,
             previous_response_id=previous_response_id,
             instructions=self.instructions,
-            # max_output_tokens=100,
             input=input_text,
             tools=self.tools,
         )
@@ -74,14 +71,18 @@ class Assistant:
                     print(f"[DEBUG] Результат функции: {function_result}")
 
                     # Формирование сообщения с результатом
-                    result_message = f"Результат выполнения функции {function_name}: {json.dumps(function_result, ensure_ascii=False)}"
+                    tool_outputs = [{
+                        "type": "function_call_output",
+                        "call_id": output_item.call_id,
+                        "output": json.dumps(function_result, ensure_ascii=False)
+                    }]
 
                     # Отправление результата обратно модели
                     follow_up = self.client.responses.create(
                         model=self.model,
                         store=True,
                         previous_response_id=response.id,
-                        input=result_message
+                        input=tool_outputs
                     )
 
                     # Обновление ID последнего ответа
@@ -115,7 +116,8 @@ print(fitness_assistant("Привет! Я сегодня сделал 4 подх
 # Ассистент использует log_exercise и возвращает ответ
 
 
-print(fitness_assistant("Сколько калорий я сжёг за 30 минут бега с высокой интенсивностью? Мой user_id 1"))
+print(fitness_assistant("Сколько калорий я сжёг за 30 минут бега с высокой интенсивностью? Мой user_id 1."
+                        "Мой вес 97 кг"))
 # Ассистент использует calculate_calories и возвращает ответ
 
 
