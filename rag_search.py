@@ -29,12 +29,12 @@ if collection.count() == 0:
                 content = f.read()
 
             # Генерируем эмбеддинг для документа
-            emmbedding = list(embedding_model.embed([content]))[0]
+            embedding = list(embedding_model.embed([content]))[0]
 
             # Добавляем в Chroma с готовым вектором
             collection.add(
                 documents=[content],
-                embeddings=[emmbedding],
+                embeddings=[embedding],
                 ids=[filename.replace(".md", "")],
                 metadatas=[{"source": filename}]
             )
@@ -54,5 +54,5 @@ def search_knowledge(query: str, n_results: int = 3) -> str:
     if not results["documents"][0]:
         logger.info("Иформация не найдена")
 
-    return "/n/n".join(results["documents"][0])
+    return "\n\n".join(results["documents"][0])
 

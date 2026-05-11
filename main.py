@@ -1,7 +1,14 @@
+import io
+import sys
+
 from dotenv import load_dotenv
 
 from agent import Agent
 from func_tools import Exercise, ListExercises, SearchDocs
+
+if sys.platform == 'linux':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
 
 load_dotenv()
 
@@ -21,9 +28,12 @@ instructions = """
 fit_agent = Agent(instructions, tools=[Exercise, ListExercises, SearchDocs])
 
 # Общение с агентом
-response = fit_agent("Как зовут тренера и какие у него достижения?")
-print(response.output_text)
+SESSION_ID = "my_session"
 
-response = fit_agent("Напомни, какие я сделал упражнения?")
-print(response.output_text)
+while True:
+    user_input = input("Вы: ")
+    if user_input.lower() == "выход":
+        break
+    response = fit_agent(user_input, session_id=SESSION_ID)
+    print(f"Тренер: {response.output_text}")
 
