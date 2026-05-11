@@ -1,5 +1,7 @@
 from pydantic import BaseModel, Field
 
+from rag_search import search_knowledge
+
 # Пока сохраняем на лету БЕЗ БД
 exercises_db = {}
 
@@ -38,3 +40,11 @@ class ListExercises(BaseModel):
                     for i, x in enumerate(exercises_db[session_id])
                 ]
             )
+
+class SearchDocs(BaseModel):
+    """Ищет информацию в документации фитнес-клуба (правила, расписание, добавки)"""
+
+    query: str = Field(description="Поисковый запрос пользователя")
+
+    def process(self, session_id):
+        return search_knowledge(self.query, n_results=2)
