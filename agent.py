@@ -5,7 +5,10 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
+from log_config import get_logger
+
 load_dotenv()
+logger = get_logger(__name__)
 
 
 class Agent:
@@ -51,7 +54,7 @@ class Agent:
             s["history"].append({"role": "func_call", "content": response.output_text})
             out = []
             for call in tool_calls:
-                print(f"Обработка: {call.name} ({call.arguments})")
+                logger.info(f"Обработка: {call.name} ({call.arguments})")
                 try:
                     fn = self.tool_map[call.name]
                     args = call.arguments or {}
@@ -76,7 +79,7 @@ class Agent:
             )
             # Сохранение состояния
             if response.status == "incomplete":
-                print(
+                logger.error(
                     f"WARNING: Incomplete response status. Reason:{response.incomplete_details.reason}"
                 )
             else:

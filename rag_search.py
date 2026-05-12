@@ -1,24 +1,20 @@
 import chromadb
 from fastembed import TextEmbedding
 import os
-import logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(levelname)s:    %(asctime)s - %(name)s - %(message)s',
-    datefmt='%d-%m-%Y %H:%M:%S'
-)
+from log_config import get_logger
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
+EMB_MODEL = os.getenv("EMBEDDING_MODEL")
 
 # 1. Загружаем лёгкую модель эмбеддингов
-embedding_model = TextEmbedding(model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+embedding_model = TextEmbedding(model_name=EMB_MODEL)
 
 # 2. Подключаем ChromaDB (сохраняется на диск)
-client = chromadb.PersistentClient(path="./fitness_db")
+client = chromadb.PersistentClient(path="./gs_db")
 
 # 3. Создаём коллекцию (без встроенной функции эмбеддингов)
-collection = client.get_or_create_collection(name="fitness_knowledge")
+collection = client.get_or_create_collection(name="gs_knowledge")
 
 # 4. Загружаем .md файл
 if collection.count() == 0:
@@ -52,7 +48,7 @@ def search_knowledge(query: str, n_results: int = 3) -> str:
     )
 
     if not results["documents"][0]:
-        logger.info("Иформация не найдена")
+        logger.info("Информация не найдена")
 
     return "\n\n".join(results["documents"][0])
 

@@ -1,39 +1,36 @@
-import io
-import sys
-
 from dotenv import load_dotenv
 
 from agent import Agent
-from func_tools import Exercise, ListExercises, SearchDocs
+from func_tools import SearchDocs
+from log_config import setup_logging
+from vk_bot import init_vk_bot
 
-if sys.platform == 'linux':
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-    sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')
-
+setup_logging()
 load_dotenv()
 
 
 instructions = """
-Ты — опытный фитнес-тренер, задача которого — помочь мне тренироваться в зале. Ты можешь
-советовать упражнения, давать рекомендации по питанию и т. д. Ты также можешь вести 
-дневник выполненных пользователем упражнений - для этого используй функцию `Exercise`. Чтобы
-показать список выполненных упражнений, используй `ListExercises`.
+Ты — ассистент клуба для занятий бразильским джиу-джитсу.
 
-ВАЖНО: Для ответа на ЛЮБЫЕ вопросы о клубе, тренерах, расписании, правилах — ОБЯЗАТЕЛЬНО 
-используй инструмент SearchDocs.
-НЕ отвечай на такие вопросы из своих знаний, даже если кажется, что знаешь.
+🚨 КРИТИЧЕСКИ ВАЖНОЕ ПРАВИЛО 🚨
+Ты НИКОГДА не отвечаешь на вопросы из своих знаний. 
+Даже если вопрос кажется очевидным — ТЫ ОБЯЗАН найти ответ в SearchDocs.
+Если SearchDocs вернул пустой результат — признайся, что не знаешь.
+
+❌ ЗАПРЕЩЕНО:
+- Выдумывать информацию
+- Использовать свои знания до вызова SearchDocs
+- Давать советы, которых нет в базе
+
+✅ ПРАВИЛЬНОЕ ПОВЕДЕНИЕ:
+1. Для ЛЮБОГО вопроса о клубе (что взять, как одеться, расписание) → SearchDocs
+2. Если информации нет → "Извините, я не нашёл это в базе знаний. Напишите тренеру @krs_83,
+я обязательно добавлю эту информацию!"
+
 """
 
+gs_agent = Agent(instructions, tools=[SearchDocs])
 
-fit_agent = Agent(instructions, tools=[Exercise, ListExercises, SearchDocs])
-
-# Общение с агентом
-SESSION_ID = "my_session"
-
-while True:
-    user_input = input("Вы: ")
-    if user_input.lower() == "выход":
-        break
-    response = fit_agent(user_input, session_id=SESSION_ID)
-    print(f"Тренер: {response.output_text}")
+if __name__ == "__main__":
+    init_vk_bot(agent=gs_agent)
 
