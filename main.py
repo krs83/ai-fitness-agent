@@ -1,13 +1,7 @@
-from dotenv import load_dotenv
-
 from agent import Agent
 from func_tools import SearchDocs
 from log_config import setup_logging
 from vk_bot import init_vk_bot
-
-setup_logging()
-load_dotenv()
-
 
 instructions = """
 Ты — ассистент клуба для занятий бразильским джиу-джитсу.
@@ -32,5 +26,6 @@ instructions = """
 gs_agent = Agent(instructions, tools=[SearchDocs])
 
 if __name__ == "__main__":
+    setup_logging()
     init_vk_bot(agent=gs_agent)
 

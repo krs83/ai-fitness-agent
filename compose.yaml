@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  gs-agent:
+    build: .
+    container_name: gs_agent
+    restart: unless-stopped
+    volumes:
+      - ./gs_db:/gs_agent/gs_db
+      - ./logs:/gs_agent/logs
+    env_file:
+      - .env

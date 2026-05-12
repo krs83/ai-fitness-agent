@@ -1,0 +1,21 @@
+FROM python:3.13-slim
+
+WORKDIR /gs_agent
+
+# Копируем зависимости и устанавливаем
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копируем весь проект
+COPY . .
+
+# Создаём папки для базы и логов с правильными правами
+RUN mkdir -p /gs_agent/gs_db /gs_agent/logs && \
+    chown -R 1000:1000 /gs_agent && \
+    chmod -R 755 /gs_agent
+
+# Переключаемся на не-root пользователя
+USER 1000
+
+# Точка входа
+CMD ["python", "-m", "main"]
