@@ -7,4 +7,5 @@ ai-fitness-agent.iml
 venv
 __pycache__/
 *_db/
+*.iml
 
