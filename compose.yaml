@@ -10,6 +10,6 @@ services:
     volumes:
       - ./gs_db:/gs_agent/gs_db
       - ./logs:/gs_agent/logs
-      - ./fastembed_cache:/root/.cache/fastembed
+      - ./fastembed_cache:/tmp/fastembed_cache
     env_file:
       - .env
