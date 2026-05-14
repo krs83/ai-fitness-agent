@@ -2,11 +2,16 @@ version: '3.8'
 
 services:
   gs-agent:
-    build: .
+    build:
+      context: .
+      args:
+        VERSION: 0.0.1
+    image: gs-agent-bot:0.0.1
     container_name: gs_agent
     restart: unless-stopped
     volumes:
       - ./gs_db:/gs_agent/gs_db
       - ./logs:/gs_agent/logs
+      - ./fastembed_cache:/root/.cache/fastembed
     env_file:
       - .env
