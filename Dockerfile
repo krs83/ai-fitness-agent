@@ -9,9 +9,6 @@ RUN mkdir -p /root/.cache/fastembed && chmod -R 777 /root/.cache
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Предварительно скачиваем модель
-RUN python -c "from fastembed import TextEmbedding; TextEmbedding('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')"
-
 # Копируем весь проект
 COPY . .
 
