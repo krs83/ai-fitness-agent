@@ -9,3 +9,5 @@ __pycache__/
 *_db/
 *.iml
 
+fastembed_cache/
+docker_commands.txt
