@@ -3,7 +3,7 @@ services:
     build:
       context: .
       args:
-        VERSION: 0.0.1
+        VERSION: 0.0.2
     image: gs-agent-bot:0.0.2
     container_name: gs_agent
     restart: unless-stopped
