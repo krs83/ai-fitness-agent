@@ -24,6 +24,7 @@ def init_vk_bot(agent: Agent):
 
     # Подключаемся к ВК
     vk_session = vk_api.VkApi(token=VK_KEY)
+    vk_session.http.timeout = 60
     vk = vk_session.get_api()
     longpoll = VkBotLongPoll(vk_session, GROUP_ID)
 
