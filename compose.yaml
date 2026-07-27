@@ -4,7 +4,7 @@ services:
       context: .
       args:
         VERSION: 0.0.1
-    image: gs-agent-bot:0.0.1
+    image: gs-agent-bot:0.0.2
     container_name: gs_agent
     restart: unless-stopped
     volumes:
